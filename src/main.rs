@@ -1,12 +1,9 @@
 use std::io::{self, Write};
-use std::process::Command;
-use std::collections::HashMap;
+mod builtins;
 
 fn main() {
-    //TODO: record used commands and their arguments
-    //let mut commands: HashMap<&str, Vec<&str> > = HashMap::new();
-    //
     loop {
+        //
         // TODO: Default style to configure
         print!("$ ");
         let reader = io::stdin();
@@ -15,18 +12,12 @@ fn main() {
         // TODO: create a logging mechanism for the application
         writer.flush().expect("Could not flush");
 
-        // Read line and run command
+        // Read line
         let mut input: String = String::new();
         reader.read_line(&mut input).ok().expect("Could Not read");
+        let line = input.trim().split_whitespace();
 
-        let mut parts = input.trim().split_whitespace();
-        let command = parts.next().unwrap();
-
-        let mut child = Command::new(command)
-            .args(parts)
-            .spawn()
-            .expect("Failed to execute child process");
-
-        child.wait().expect("Failed to wait on child process");
+        // Parse line
+        builtins::parser::parse(line);
     }
 }
