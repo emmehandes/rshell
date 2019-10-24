@@ -1,11 +1,13 @@
 use std::io::{self, Write};
 mod builtins;
+mod settings;
 
 fn main() {
+    let config = settings::config::read_config("src/settings/config.json");
     loop {
         //
         // TODO: Default style to configure
-        print!("$ ");
+        print!("{}", config.prompt);
         let reader = io::stdin();
         let mut writer = io::stdout();
 
