@@ -14,7 +14,7 @@ struct Request<'a> {
 
 impl<'a> fmt::Display for Request<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "name: {}\n args:{:?}", self.name, self.args)
+        write!(f, "DEBUG: \nname: {}\n args:{:?}", self.name, self.args)
     }
 }
 
@@ -25,9 +25,10 @@ pub fn parse(mut command: std::str::SplitWhitespace) {
             name: command.next().unwrap(),
             args: command.collect() };
 
+    println!("{}", request);
     match request.name {
         "exit" => { exit(0) },
-        "cd" => { if request.args.len() >= 1 { cd(request.args[1]); } }
+        "cd" => { if request.args.len() >= 1 { cd(request.args[0]); } }
         &_ => { execute(request); }
     }
 }
@@ -51,7 +52,6 @@ fn cd(target: &str) {
 //-----------------------------------------------------------------------------
 // execute request
 fn execute<'a>(request: Request<'a>) {
-    println!("{}", request);
     let child = Command::new(request.name)
                     .args(request.args)
                     .spawn();
