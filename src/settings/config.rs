@@ -27,6 +27,7 @@ pub fn read_config(config_path: &str) -> Config {
                 Config { prompt: "$ ".to_string() }
             }
         } else {
+            // Path is invalid, set default configuration:
             Config { prompt: "$ ".to_string() }
         };
     config
